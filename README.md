@@ -7,5 +7,4 @@
   <h2>Data Sources</h2>
     <p>The data used for this project can be find <a href="https://www.cs.york.ac.uk/semeval-2013/task1/index.php%3Fid=data.html ">here</a>
     <p>The data added manually is in the files data/Guardian_time.txt and data/Financial_tine.txt</p>
-    
-    <p>To create the datasets download the AQUAINT training data and run the notebook "parse_time.ipyb"</p>
+    <p>To create the datasets download the AQUAINT training data and run the notebook "parse_time.ipynb"</p>
