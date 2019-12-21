@@ -27,8 +27,6 @@ END_IDX_IDX = 2
 def interpret_documents(model, batch_size, dev_data, dev_text, ofile, max_doc_len):
     j = 0
     with open(ofile, "w") as ofh:
-        list_top_pos = []
-        list_top_neg = []
         for batch_idx, chunk in enumerate(chunked(dev_data, batch_size)):
             batch = Batch([x for x, y in chunk], model.embeddings, model.to_cuda)
             res, scores = model.forward(batch, 1)
@@ -91,16 +89,13 @@ def interpret_documents(model, batch_size, dev_data, dev_text, ofile, max_doc_le
                 for l in top_ten_deltas:
                     s = top_scoring_spans[l[0]].display(dev_text[j])
                     ofh.write(str(int(l[0]))+" "+str(s.encode('utf-8'))[2:-1]+"\n")
-                    list_top_pos.append(int(l[0]))
 
 
                 ofh.write("Top ten negative deltas:\n")
                 for l in top_ten_neg_deltas:
                     s = top_scoring_spans[l[0]].display(dev_text[j])
                     ofh.write(str(int(l[0]))+" "+str(s.encode('utf-8'))[2:-1]+"\n")
-                    list_top_neg.append(int(l[0]))
                 j += 1
-    return list_top_pos, list_top_neg
 
 
 # TODO: refactor duplicate code with soft_patterns.py
