@@ -8,3 +8,7 @@
     <p>The data used for this project can be find <a href="https://www.cs.york.ac.uk/semeval-2013/task1/index.php%3Fid=data.html ">here</a>
     <p>The data added manually is in the files data/Guardian_time.txt and data/Financial_tine.txt</p>
     <p>To create the datasets download the AQUAINT training data and run the notebook "parse_time.ipynb"</p>
+
+  <h2>Embeddings</h2>
+    <p>For the project we used glove-300 as pretrained embedding</p>
+    <p>To get the embeddings files: run the function "read_embeddings" from sopa-master/data.py</p>
