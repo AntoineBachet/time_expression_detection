@@ -7,7 +7,7 @@ sys.path.append("sopa_master/")
 import tensorboardX
 from data import read_embeddings, read_docs, read_labels
 
-from soft_patterns import LogSpaceMaxTimesSemiring, SoftPatternClassifier, train, Batch, evaluate_accuracy
+from soft_patterns import LogSpaceMaxTimesSemiring, SoftPatternClassifier, train, Batch, evaluate_model
 from util import to_cuda
 from interpret_classification_results import interpret_documents
 from visualize import visualize_patterns
@@ -72,7 +72,7 @@ for pattern_spec in pattern_specs:
                           num_iterations=250,model_file_prefix="trainMaxTimes_timedata",learning_rate=learning_rate,
                           batch_size=150,num_classes=2,patience=30,dropout=dropout)                    
                     torch.save(model.state_dict(), "modelgridsearch/" + caracteristic + ".pth")
-                    acc = evaluate_accuracy(model, dev_data, batch_size=150, gpu=False)
+                    acc = evaluate_model(model, dev_data, batch_size=150, gpu=False)["accuracy"]
                     results.append((i, learning_rate, dropout, mlp_hidden_dim, num_mlp_layer, acc))
                     print(">>>>>",i, learning_rate, dropout, mlp_hidden_dim, num_mlp_layer, acc,"<<<<<<<<<")
 data=pd.DataFrame(results,columns=["pattern", "learning_rate", "dropout", "mlp_hidden_dim", "num_mlp_layer", "dev_acc"])

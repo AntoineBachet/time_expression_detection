@@ -4,7 +4,7 @@ Script to evaluate the accuracy of a model.
 """
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from collections import OrderedDict
-from soft_patterns import MaxPlusSemiring, LogSpaceMaxTimesSemiring, evaluate_accuracy, SoftPatternClassifier, ProbSemiring, \
+from soft_patterns import MaxPlusSemiring, LogSpaceMaxTimesSemiring, evaluate_model, SoftPatternClassifier, ProbSemiring, \
     soft_pattern_arg_parser, general_arg_parser
 
 from baselines.cnn import PooledCnnClassifier, max_pool_seq, cnn_arg_parser
@@ -112,7 +112,7 @@ def main(args):
     if args.gpu:
         model.to_cuda(model)
 
-    test_acc = evaluate_accuracy(model, dev_data, args.batch_size, args.gpu)
+    test_acc = evaluate_model(model, dev_data, args.batch_size, args.gpu)["accuracy"]
 
     print("Test accuracy: {:>8,.3f}%".format(100*test_acc))
 
