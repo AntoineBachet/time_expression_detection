@@ -10,7 +10,7 @@ import sys
 sys.path.append("sopa_master/")
 
 from data import read_embeddings, read_docs, read_labels
-from soft_patterns import ProbSemiring, MaxPlusSemiring, LogSpaceMaxTimesSemiring, SoftPatternClassifier, train, Batch, evaluate_accuracy
+from soft_patterns import ProbSemiring, MaxPlusSemiring, LogSpaceMaxTimesSemiring, SoftPatternClassifier, train, Batch, evaluate_model
 from util import to_cuda
 from interpret_classification_results import interpret_documents
 from visualize import visualize_patterns
@@ -82,7 +82,7 @@ for p in params:
         gpu=False,
         dropout=param["dropout"]
     )
-    acc = evaluate_accuracy(model, test_data, batch_size=150, gpu=False)
+    acc = evaluate_model(model, test_data, batch_size=150, gpu=False)["accuracy"]
     results.append((param, acc))
     i += 1
     pickle.dump(results, open("data/results_GS_cnn.p", "wb"))

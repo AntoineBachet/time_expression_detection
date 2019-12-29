@@ -511,21 +511,42 @@ def compute_loss(model, batch, num_classes, gold_output, loss_function, gpu, deb
     )
 
 
-def evaluate_accuracy(model, data, batch_size, gpu, debug=0):
+def evaluate_model(model, data, batch_size, gpu, debug=0):
     n = float(len(data))
     correct = 0
     num_1s = 0
+    correct_1=0
+    false_negative=0
     for batch in chunked_sorted(data, batch_size):
         batch_obj = Batch([x for x, y in batch], model.embeddings, to_cuda(gpu))
         gold = [y for x, y in batch]
         predicted = model.predict(batch_obj, debug)
+        
         num_1s += predicted.count(1)
         correct += sum(1 for pred, gold in zip(predicted, gold) if pred == gold)
+        correct_1+= sum(1 for pred, gold in zip(predicted, gold) if pred == gold and gold==1)
+        false_negative+= sum(1 for pred, gold in zip(predicted, gold) if pred != gold and gold==1)
+    
+    accuracy = correct / n
+    precision = correct_1/max(num_1s,1)
+    recall=correct_1/(false_negative+correct_1)
+    f1_score = 2*precision*recall/ max(precision+recall,1)
+
 
     print("num predicted 1s:", num_1s)
     print("num gold 1s:     ", sum(gold == 1 for _, gold in data))
+    print("accuracy", accuracy)
+    print("precision",precision)
+    print("recall",recall)
+    print("f1 score",f1_score)
+    
 
-    return correct / n
+    return {
+        "accuracy": accuracy,
+        "precision": precision,
+        "recall": recall,
+        "f1_score": f1_score
+    }
 
 
 def train(train_data,

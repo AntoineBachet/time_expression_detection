@@ -8,7 +8,7 @@ import sys
 sys.path.append("sopa_master/")
 
 from data import read_embeddings, read_docs, read_labels
-from soft_patterns import LogSpaceMaxTimesSemiring, SoftPatternClassifier, train, Batch, evaluate_accuracy
+from soft_patterns import LogSpaceMaxTimesSemiring, SoftPatternClassifier, train, Batch, evaluate_model
 from util import to_cuda
 from interpret_classification_results import interpret_documents
 from visualize import visualize_patterns
@@ -95,7 +95,7 @@ for p in params:
     ) 
 
     torch.save(model.state_dict(), f"models/gridsearch/sopa/model_{i}.pth")
-    acc = evaluate_accuracy(model, dev_data, batch_size=150, gpu=False)
+    acc = evaluate_model(model, dev_data, batch_size=150, gpu=False)["accuracy"]
     results.append((param, acc))
     pickle.dump(
         pd.DataFrame(results, columns=["params", "dev_acc"]),
