@@ -83,7 +83,7 @@ MaxPlusSemiring = \
         zeros,
         torch.max,
         torch.add,
-        sigmoid,
+        identity,
         identity
     )
 # element-wise max, times. in log-space
